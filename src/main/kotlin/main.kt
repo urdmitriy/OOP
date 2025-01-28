@@ -1,81 +1,81 @@
 data class Comments(
-    val count: Int,
-    val canPost: Boolean,
-    val groupsCanPost : Boolean,
-    val canClose : Boolean,
-    val canOpen : Boolean,
+    val count: Int = 0,
+    val canPost: Boolean = false,
+    val groupsCanPost : Boolean = false,
+    val canClose : Boolean = false,
+    val canOpen : Boolean = false,
 )
 
 data class Copyright(
-    val id: Int,
-    val link: String,
-    val name: String,
-    val type: String,
+    val id: Int = 0,
+    val link: String = "",
+    val name: String = "",
+    val type: String = "",
 )
 
 data class Likes(
-    val count: Int,
-    val userLikes: Boolean,
-    val canLike: Boolean,
-    val canPublish: Boolean,
+    val count: Int = 0,
+    val userLikes: Boolean = false,
+    val canLike: Boolean = false,
+    val canPublish: Boolean = false,
 )
 
 data class Reposts(
-    val count: Int,
-    val userReposted: Boolean
+    val count: Int = 0,
+    val userReposted: Boolean = false
 )
 
 data class Views(
-    val count: Int
+    val count: Int = 0
 )
 
 data class PostSource(
-    val key: String
+    val key: String = ""
 )
 
 data class Geo(
-    val type: String,
-    val coordinates: String,
-    val place: Unit
+    val type: String = "",
+    val coordinates: String = "",
+    val place: Unit = Unit
 )
 
 data class Donut(
-    val isDonut: Boolean,
-    val paidDuration: Int,
-    val placeholder: Unit,
-    val canPublishFreeCopy: Boolean,
-    val editMode: String
+    val isDonut: Boolean = false,
+    val paidDuration: Int = 0,
+    val placeholder: Unit = Unit,
+    val canPublishFreeCopy: Boolean = false,
+    val editMode: String = ""
 )
 
 data class Post(
     val id: Int,
-    val ownerId: Int,
-    val fromId: Int,
-    val createdBy: Int,
-    val date: Int,
-    val text: String,
-    val replyOwnerId: Int,
-    val replyPostId: Int,
-    val friendsOnly: Boolean,
+    val ownerId: Int = 0,
+    val fromId: Int = 0,
+    val createdBy: Int = 0,
+    val date: Int = 0,
+    val text: String = "",
+    val replyOwnerId: Int = 0,
+    val replyPostId: Int = 0,
+    val friendsOnly: Boolean = false,
     val comment: Comments,
     val copyright: Copyright,
     val likes: Likes,
     val reports: Reposts,
     val views: Views,
-    val postType: String,
+    val postType: String = "",
     val postSource: PostSource,
-    val attachments: Array<Unit>,
+    val attachments: Array<Unit> = emptyArray<Unit>(),
     val geo: Geo,
-    val signerId: Int,
-    val copyHistory: Array<Post>,
-    val canPin:Boolean,
-    val canDelete:Boolean,
-    val canEdit:Boolean,
-    val isPinned: Boolean,
-    val markedAsAds: Boolean,
-    val isFavorite: Boolean,
+    val signerId: Int = 0,
+    val copyHistory: Array<Post> = emptyArray<Post>(),
+    val canPin:Boolean = false,
+    val canDelete:Boolean = false,
+    val canEdit:Boolean = false,
+    val isPinned: Boolean = false,
+    val markedAsAds: Boolean = false,
+    val isFavorite: Boolean = false,
     val donut: Donut,
-    val postponedId: Int
+    val postponedId: Int = 0
 )
 
 object WallService {
@@ -83,8 +83,8 @@ object WallService {
     private var nextId = 0
 
     fun add(post: Post): Post {
-        posts += post.copy(id = nextId)
         nextId ++
+        posts += post.copy(id = nextId)
         return posts.last()
     }
 
@@ -95,8 +95,12 @@ object WallService {
                 return true
             }
         }
-
         return false
+    }
+
+    fun clear() {
+        posts = emptyArray()
+        nextId = 0
     }
 
 }
