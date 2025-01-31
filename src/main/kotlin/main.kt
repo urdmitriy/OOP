@@ -1,3 +1,4 @@
+
 data class Comments(
     val count: Int = 0,
     val canPost: Boolean = false,
@@ -48,24 +49,24 @@ data class Donut(
 )
 
 data class Post(
-    val id: Int,
+    val id: Int = 0,
     val ownerId: Int = 0,
     val fromId: Int = 0,
     val createdBy: Int = 0,
     val date: Int = 0,
     val text: String = "",
-    val replyOwnerId: Int = 0,
-    val replyPostId: Int = 0,
+    val replyOwnerId: Int? = null,
+    val replyPostId: Int? = null,
     val friendsOnly: Boolean = false,
-    val comment: Comments,
-    val copyright: Copyright,
-    val likes: Likes,
-    val reports: Reposts,
-    val views: Views,
+    val comment: Comments? = null,
+    val copyright: Copyright? = null,
+    val likes: Likes? = null,
+    val reports: Reposts? = null,
+    val views: Views? = null,
     val postType: String = "",
-    val postSource: PostSource,
+    val postSource: PostSource? = null,
     val attachments: Array<Unit> = emptyArray<Unit>(),
-    val geo: Geo,
+    val geo: Geo? = null,
     val signerId: Int = 0,
     val copyHistory: Array<Post> = emptyArray<Post>(),
     val canPin:Boolean = false,
@@ -74,7 +75,7 @@ data class Post(
     val isPinned: Boolean = false,
     val markedAsAds: Boolean = false,
     val isFavorite: Boolean = false,
-    val donut: Donut,
+    val donut: Donut? = Donut().copy(),
     val postponedId: Int = 0
 )
 
