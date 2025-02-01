@@ -2,6 +2,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import Photo as Photo
 
 class MainKtTest {
 
@@ -30,9 +31,7 @@ class MainKtTest {
 
     @Test
     fun postUpdateNoExist() {
-
-        val post = Post()
-
+        var post = Post()
         WallService.add(post)
         WallService.add(post)
         assertFalse(WallService.update(post.copy(id = 3, ownerId = 10)))
