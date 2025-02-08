@@ -159,7 +159,7 @@ data class Post(
     val replyOwnerId: Int? = null,
     val replyPostId: Int? = null,
     val friendsOnly: Boolean = false,
-    val comment: Comments? = null,
+    var comment: Array<Comment> = emptyArray<Comment>(),
     val copyright: Copyright? = null,
     val likes: Likes? = null,
     val reports: Reposts? = null,
@@ -179,6 +179,34 @@ data class Post(
     val donut: Donut? = Donut().copy(),
     val postponedId: Int = 0
 )
+
+data class DonutComment(
+    val isDon: Boolean = false,
+    val placeholder: String = ""
+)
+
+data class Thread(
+    val count: Int = 0,
+    val items: Array<Comment> = emptyArray<Comment>(),
+    val canPost: Boolean = false,
+    val showReplyButton: Boolean = true,
+    val groupsCanPost: Boolean = false
+)
+
+data class Comment (
+    val id: Int = 0,
+    val fromId: Int = 0,
+    val date: Int = 0,
+    val text: String,
+    val donut: DonutComment = DonutComment(),
+    val replyToUser: Int = 0,
+    val replyToComment: Int = 0,
+    val attachments: Attachments? = null,
+    val parentsStack: Array<Int> = emptyArray<Int>(),
+    val thread: Thread = Thread()
+)
+
+class PostNotFoundException(message: String): Exception(message)
 
 object WallService {
     private var posts = emptyArray<Post>()
@@ -205,7 +233,23 @@ object WallService {
         nextId = 0
     }
 
+    private fun findPostById(postId: Int): Post? {
+        for ((index, postItem) in posts.withIndex()) {
+            if (postItem.id == postId) {
+                return posts[index]
+            }
+        }
+        return null
+    }
+
+    fun createComment(postId: Int, comment: Comment): Comment {
+        val post = findPostById(postId)
+        post ?: throw PostNotFoundException("No this post!")
+        post.comment += comment
+        return post.comment.last()
+    }
 }
+
 fun main(){
     var post = Post()
     post.attachments += PhotoAttachment()
@@ -213,6 +257,13 @@ fun main(){
     post.attachments += VideoAttachment()
     post.attachments += FileAttachment()
     post.attachments += LinkAttachment()
+
+    WallService.add(post)
+    try {
+        println(WallService.createComment(1,Comment(text = "First comment!")).toString())
+    } catch (e: PostNotFoundException) {
+        println("Пост не найден")
+    }
 
     return
 }

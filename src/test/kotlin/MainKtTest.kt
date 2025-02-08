@@ -36,4 +36,19 @@ class MainKtTest {
         WallService.add(post)
         assertFalse(WallService.update(post.copy(id = 3, ownerId = 10)))
     }
+
+    @Test
+    fun addCommentExistPost() {
+        val post = Post()
+        WallService.add(post)
+        WallService.createComment(1, Comment(text = "First comment!"))
+        assertEquals(WallService.createComment(1, Comment(text = "First comment!")).id, 0)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun addCommentNullPost() {
+        val post = Post()
+        WallService.add(post)
+        WallService.createComment(0, Comment(text = "First comment!"))
+    }
 }
